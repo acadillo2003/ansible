@@ -175,6 +175,19 @@ def regex_escape(string):
     '''Escape all regular expressions special characters from STRING.'''
     return re.escape(string)
 
+def regex_findall(value, pattern, ignorecase=False):
+    ''' Return a list of all values that match pattern'''
+    if not isinstance(value, basestring):
+        value = str(value)
+
+    flags = re.M
+    if ignorecase:
+        flags |= re.I
+
+    _re = re.compile(r'%s' % pattern, flags=flags)
+    return _re.findall(value)
+
+
 @environmentfilter
 def rand(environment, end, start=None, step=None):
     r = SystemRandom()
@@ -408,6 +421,7 @@ class FilterModule(object):
             # regex
             'regex_replace': regex_replace,
             'regex_escape': regex_escape,
+            'regex_findall': regex_findall,
 
             # ? : ;
             'ternary': ternary,
