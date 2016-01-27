@@ -39,7 +39,7 @@ CLI_ERRORS_RE = [
     re.compile(r"% ?Error"),
     re.compile(r"^% \w+", re.M),
     re.compile(r"% ?Bad secret"),
-    re.compile(r"invalid input", re.I),
+    re.compile(r"invalid (?:input|value)", re.I),
     re.compile(r"(?:incomplete|ambiguous) command", re.I),
     re.compile(r"connection timed out", re.I),
     re.compile(r"[^\r\n]+ not found", re.I),
