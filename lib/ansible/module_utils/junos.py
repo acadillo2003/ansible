@@ -81,13 +81,16 @@ class NetworkModule(AnsibleModule):
         self.execute('set cli screen-length 0')
 
     def configure(self, commands):
-        commands = to_list(commands)
-        commands.insert(0, 'configure')
-        commands.append('commit and-quit')
-        responses = self.execute(commands)
-        responses.pop(0)
-        responses.pop()
-        return responses
+        try:
+            commands = to_list(commands)
+            commands.insert(0, 'configure')
+            commands.append('commit and-quit')
+            responses = self.execute(commands)
+            responses.pop(0)
+            responses.pop()
+            return responses
+        except ShellError, exc:
+            self.fail_json(msg='unable to apply configuration', error=exc.message)
 
     def execute(self, commands, **kwargs):
         return self.connection.send(commands)
@@ -99,8 +102,7 @@ class NetworkModule(AnsibleModule):
         return parse(cfg, indent=4)
 
     def get_config(self):
-        cmd = 'show configuration'
-        return self.execute(cmd)[0]
+        return self.execute('show configuration')[0]
 
 def get_module(**kwargs):
     """Return instance of NetworkModule
