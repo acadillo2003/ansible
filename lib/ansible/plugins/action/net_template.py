@@ -41,7 +41,7 @@ class ActionModule(ActionBase):
 
         try:
             self._handle_template()
-        except ValueError as exc:
+        except ValueError, exc:
             return dict(failed=True, msg=exc.message)
 
         result.update(self._execute_module(module_name=self._task.action,
@@ -79,14 +79,11 @@ class ActionModule(ActionBase):
             if not source:
                 source = self._loader.path_dwim_relative(self._loader.get_basedir(), src)
 
-        if not os.path.exists(source):
-            return
-
         try:
             with open(source, 'r') as f:
                 template_data = to_unicode(f.read())
         except IOError:
-            return dict(failed=True, msg='unable to load src file')
+            raise ValueError('unable to load src file')
 
         self._task.args['src'] = self._templar.template(template_data)
 
