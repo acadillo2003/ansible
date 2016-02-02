@@ -202,10 +202,11 @@ class NetworkModule(AnsibleModule):
         if self.params.get('include_defaults'):
             cmd += ' all'
         if self.params['transport'] == 'cli':
-            return self.execute(cmd)[0]
+            resp = self.execute(cmd)
+            return resp[0]
         else:
             resp = self.execute(cmd, encoding='text')
-            return resp[0]
+            return resp[0]['output']
 
 
 def get_module(**kwargs):
