@@ -41,7 +41,7 @@ class ActionModule(ActionBase):
 
         try:
             self._handle_template()
-        except ValueError, exc:
+        except ValueError as exc:
             return dict(failed=True, msg=exc.message)
 
         result.update(self._execute_module(module_name=self._task.action,
